@@ -15,7 +15,7 @@ namespace PingPong.Web.Models
         public GameModel(int id)
         {
             _repo = new PingPongRepository<Game>();
-            _game = _repo.FindBy(x => x.Id == id);
+            _game = _repo.FindBy(x => x.Id == id).SingleOrDefault();
         }
     }
 }
