@@ -44,12 +44,8 @@ namespace PingPong.BLL
         }
 
         /// <summary>
-        /// Returns Player information useful to view
-        /// Indexes are as follows
-        /// [0] = Player Id
-        /// [1] = Player FullName
-        /// [2] = Player Current Elo ranking
-        /// </summary>
+        /// Returns Player without password info
+        ///  </summary>
         /// <returns></returns>
         public IEnumerable<Player> GetAllPlayersRestricted()
         {
@@ -77,7 +73,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         private string GetFullName(Player player)
         {
-            var fullname = string.Format("{0} {1}", player.FirstName, player.LastName);
+            var fullname = string.Format("{0} {1}", player.FirstName, player.LastName); //NOTE: This method is currently not used in anywhere
             return fullname;
         }
 
