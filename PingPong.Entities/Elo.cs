@@ -14,7 +14,7 @@ namespace PingPong.Entities
         [Required]
         public int UserId { get; set; }
         [Required]
-        public int EloScore { get; set; }
+        public double EloScore { get; set; }
         [Required]
         public int GameId { get; set; }
     }

@@ -19,6 +19,8 @@ namespace PingPong.BLL
             _player = player;
         }
 
+
+        
         /// <summary>
         /// Creates a new Player
         /// </summary>
@@ -36,21 +38,23 @@ namespace PingPong.BLL
         }
 
         /// <summary>
-        /// Deletes and existing Player
+        /// Deletes an existing Player
         /// </summary>
         public void DeleteExistingPlayer()
         {
             _repo.Delete(_player.PlayerId);
         }
 
-        /// <summary>
-        /// Returns all current Players
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Player> GetAllPlayers()
+        public Dictionary<string, double> GetAllPlayersRestricted()
         {
-            var players = _repo.GetAll();
-            return players;
+            var players = GetAllPlayers();
+            var restrictedPlayers = new Dictionary<string, double>();
+            foreach (var player in players)
+            {
+                var fullname = GetFullName(player);
+                restrictedPlayers.Add(fullname, player.CurrentEloRating);
+            }
+            return restrictedPlayers;
         }
 
         /// <summary>
@@ -67,9 +71,15 @@ namespace PingPong.BLL
         /// Returns Player's first and last name
         /// </summary>
         /// <returns></returns>
-        public string GetFullName()
+        private string GetFullName(Player player)
         {
-            return _player.FirstName + _player.LastName;
+            return player.FirstName + player.LastName;
+        }
+
+        public IEnumerable<Player> GetAllPlayers()
+        {
+            var players = _repo.GetAll();
+            return players;
         }
     }
 }

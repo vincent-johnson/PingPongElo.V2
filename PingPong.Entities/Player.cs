@@ -24,7 +24,7 @@ namespace PingPong.Entities
         [MaxLength(100)]
         public string Department { get; set; }
         [Required]
-        public int CurrentEloRating { get; set; }
+        public double CurrentEloRating { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
 
