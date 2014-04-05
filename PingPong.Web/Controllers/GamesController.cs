@@ -32,22 +32,56 @@ namespace PingPong.Web.Controllers
         // GET: Games/Create
         public ActionResult Create()
         {
-            return View();
+            var ps = new PlayerService(new Player());
+            var players = ps.GetAllPlayersRestricted();
+            var usernames = new List<string>();
+            foreach (Player player in players)
+            {
+                usernames.Add(player.LoginName);
+            }
+            var a = new GamesCreateViewModel();
+            a.Usernames = usernames;
+            return View(a);
         }
 
         // POST: Games/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(GamesCreateViewModel gamevM)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                Game game=new Game();
+                game.IsRankedGame = true;
+                game.VerifiedById = 0;
+                game.GamePlayedDate = DateTime.UtcNow;
+                game.ChallengerSecondId = -1;
+                game.DefenderSecondId = -1;
+                game.GameTypeId = 1;
+                PlayerService ps = new PlayerService(new Player());
+                var players=ps.GetAllPlayersRestricted();
+                Player defender = players.Where(a => a.LoginName == gamevM.DefenderUsername).FirstOrDefault();
+                game.DefenderId = defender.PlayerId;
+                game.DefenderEloRating = (int)defender.CurrentEloRating;
+                Player challenger = players.Where(a => a.LoginName == gamevM.ChallengerUsername).FirstOrDefault();
+                game.ChallengerId = challenger.PlayerId;
+                game.ChallengerEloRating = (int)challenger.CurrentEloRating;
+                game.DefenderWon = gamevM.DefenderWonFlag;
+                GameService gs = new GameService(game);
+                gs.CreateNewGame();
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                var ps = new PlayerService(new Player());
+                var players = ps.GetAllPlayersRestricted();
+                var usernames = new List<string>();
+                foreach (Player player in players)
+                {
+                    usernames.Add(player.LoginName);
+                }
+                var a = new GamesCreateViewModel();
+                a.Usernames = usernames;
+                return View(a);
             }
         }
 
