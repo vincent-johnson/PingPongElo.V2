@@ -58,6 +58,7 @@ namespace PingPong.Web.Controllers
             try
             {
                 Game game=new Game();
+                game.Weight = 30;
                 game.IsRankedGame = true;
                 game.VerifiedById = 0;
                 game.GamePlayedDate = DateTime.UtcNow;
@@ -72,8 +73,12 @@ namespace PingPong.Web.Controllers
                 game.ChallengerId = challenger.PlayerId;
                 game.ChallengerEloRating = (int)challenger.CurrentEloRating;
                 game.DefenderWon = gamevM.DefenderWonFlag;
-                GetChallengerEloChange(game);
+                double challengerEloChange=GetChallengerEloChange(game);
                 GameService.CreateNewGame(game);
+                challenger.CurrentEloRating += challengerEloChange;
+                defender.CurrentEloRating -= challengerEloChange;
+                PlayerService.UpdateExistingPlayer(challenger);
+                PlayerService.UpdateExistingPlayer(defender);
                 return RedirectToAction("Index");
             }
             catch

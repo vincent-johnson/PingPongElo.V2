@@ -16,8 +16,8 @@ namespace PingPong.BLL
         {
             var chart = new Chart();
             double playerExpectedScore = chart.DataManipulator.Statistics.NormalDistribution((playerElo - opponentElo) / 200.0);
-            int playerActualScore=playerWon?1:-1;
-            double ratingChange = weight * playerActualScore-playerExpectedScore;
+            int playerActualScore=playerWon?1:0;
+            double ratingChange = weight * (playerActualScore-playerExpectedScore);
             return ratingChange;
         }
     }
