@@ -28,7 +28,7 @@ namespace PingPong.Web.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact information for the STAPPPP team.";
 
             return View();
         }
