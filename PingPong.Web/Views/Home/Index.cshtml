@@ -5,16 +5,20 @@
 
 <div class="jumbotron">
     <h1>TEST YOUR MIGHT</h1>
-    <p class="lead">STAPPPP Beta is a tool for recording and comparing the ping-pong playing performance of Accruent employees.  Below are the players and their current ratings.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <p class="lead">STAPPPP beta is a tool for recording and comparing the ping-pong playing performance of Accruent employees.  Below are the players and their current ratings.
+    </p>
 </div>
-<table border="1" style="width:300px">
-<tr><td>Username</td><td>ELO Rating</td></tr>
-@foreach (var player in Model.players)
+<table border="1" style="width:600px">
+
+<tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td></tr>
+@for(int i=1;i<=Model.players.Count();i++)
 {
+    string name=Model.players.ElementAt(i-1).FirstName+" "+Model.players.ElementAt(i-1).LastName;
     <tr>
-        <td>@player.LoginName</td>
-        <td>@player.CurrentEloRating</td>
+        <td><font size="4">@i</font></td>
+        <td><font size="4">@name</font></td>
+        <td><font size="4">@Model.players.ElementAt(i-1).CurrentEloRating</font></td>
     </tr>
 }
+
 </table>
