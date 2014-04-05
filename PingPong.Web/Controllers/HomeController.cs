@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PingPong.BLL;
+using PingPong.Entities;
+using Microsoft.AspNet.Identity;
+using PingPong.Web.Models;
 
 namespace PingPong.Web.Controllers
 {
@@ -10,7 +14,9 @@ namespace PingPong.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var vM = new HomeIndexViewModel();
+            vM.players = GetPlayers().ToList();
+            return View(vM);
         }
 
         public ActionResult About()
@@ -27,5 +33,10 @@ namespace PingPong.Web.Controllers
             return View();
         }
 
+        public IEnumerable<Player> GetPlayers()
+        { 
+            PlayerService pService = new PlayerService(new Player());
+            return pService.GetAllPlayersRestricted(); //User.Identity.GetUserName();
+        }
     }
 }
