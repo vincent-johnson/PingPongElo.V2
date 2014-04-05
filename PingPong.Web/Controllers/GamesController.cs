@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PingPong.BLL;
 using PingPong.Data;
 using PingPong.Entities;
+using PingPong.Web.Models;
 
 namespace PingPong.Web.Controllers
 {
@@ -13,8 +15,10 @@ namespace PingPong.Web.Controllers
         // GET: Games
         public ActionResult Index()
         {
-            
-            return View();
+            IEnumerable<Game> games= GetGames(User.Identity.Name);
+            var a = new GamesIndexViewModel();
+            a.games = games;
+            return View(a);
         }
 
         // GET: Games/Details/5
@@ -89,6 +93,14 @@ namespace PingPong.Web.Controllers
             {
                 return View();
             }
+        }
+
+        private IEnumerable<Game> GetGames(string username)
+        {
+            PlayerService ps = new PlayerService(new Player());
+            GameService gs = new GameService();
+            var player=ps.GetAllPlayersRestricted().Where(a => a.LoginName == username).FirstOrDefault();
+            return gs.GetGamesByUsername(player.PlayerId);
         }
     }
 }

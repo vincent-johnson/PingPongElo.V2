@@ -1,0 +1,15 @@
+﻿@model PingPong.Web.Models.GamesIndexViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<table border="1" style="width:300px">
+<tr><td>GameId</td><td>Outcome</td></tr>
+@foreach (var game in Model.games)
+{
+    <tr>
+        <td>@game.GameId</td>
+        <td>@game.DefenderWon</td>
+    </tr>
+}
+</table>
