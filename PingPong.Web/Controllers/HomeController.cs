@@ -26,5 +26,6 @@ namespace PingPong.Web.Controllers
 
             return View();
         }
+
     }
 }

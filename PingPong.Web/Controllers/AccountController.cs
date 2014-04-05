@@ -94,20 +94,20 @@ namespace PingPong.Web.Controllers
             {
                 var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                Player myPlayer = new Player();
-                myPlayer.LoginName = model.Email;
-                myPlayer.Password = model.Password;
-                myPlayer.FirstName = model.FirstName;
-                myPlayer.LastName = model.LastName;
-                myPlayer.CurrentEloRating = 1500;
-                myPlayer.Department = model.Department;
-                myPlayer.Active = true;
-                myPlayer.IsAdmin = false;
-                PlayerService playerService = new PlayerService(myPlayer);
-                playerService.CreateNewPlayer();
                 if (result.Succeeded)
                 {
 
+                    Player myPlayer = new Player();
+                    myPlayer.LoginName = model.Email;
+                    myPlayer.Password = model.Password;
+                    myPlayer.FirstName = model.FirstName;
+                    myPlayer.LastName = model.LastName;
+                    myPlayer.CurrentEloRating = 1500;
+                    myPlayer.Department = model.Department;
+                    myPlayer.Active = true;
+                    myPlayer.IsAdmin = false;
+                    PlayerService playerService = new PlayerService(myPlayer);
+                    playerService.CreateNewPlayer();
                     await SignInAsync(user, isPersistent: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
