@@ -105,6 +105,7 @@ namespace PingPong.Web.Controllers
                 myPlayer.IsAdmin = true;
                 PlayerService playerService = new PlayerService(myPlayer);
                 playerService.CreateNewPlayer();
+                Dictionary<String,double> players=playerService.GetAllPlayersRestricted();
                 if (result.Succeeded)
                 {
 

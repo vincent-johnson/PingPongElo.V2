@@ -35,18 +35,21 @@ namespace PingPong.Data
         public virtual void Create(T entity)
         {
             _dbSet.Add(entity);
+            _context.SaveChanges();
         }
 
         public virtual void Update(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public virtual void Delete(object id)
         {
             T entity = _dbSet.Find(id);
             Delete(entity);
+            _context.SaveChanges();
         }
     }
 }
