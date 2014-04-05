@@ -97,15 +97,14 @@ namespace PingPong.Web.Controllers
                 Player myPlayer = new Player();
                 myPlayer.LoginName = model.Email;
                 myPlayer.Password = model.Password;
-                myPlayer.FirstName = "Cool";
-                myPlayer.LastName = "Guy";
+                myPlayer.FirstName = model.FirstName;
+                myPlayer.LastName = model.LastName;
                 myPlayer.CurrentEloRating = 1500;
-                myPlayer.Department = "Engineering";
+                myPlayer.Department = model.Department;
                 myPlayer.Active = true;
-                myPlayer.IsAdmin = true;
+                myPlayer.IsAdmin = false;
                 PlayerService playerService = new PlayerService(myPlayer);
                 playerService.CreateNewPlayer();
-                Dictionary<String,double> players=playerService.GetAllPlayersRestricted();
                 if (result.Succeeded)
                 {
 
