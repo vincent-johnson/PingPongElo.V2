@@ -100,7 +100,7 @@ namespace PingPong.Web.Controllers
             PlayerService ps = new PlayerService(new Player());
             GameService gs = new GameService();
             var player=ps.GetAllPlayersRestricted().Where(a => a.LoginName == username).FirstOrDefault();
-            return gs.GetGamesByUsername(player.PlayerId);
+            return gs.GetGamesByPlayerId(player.PlayerId);
         }
     }
 }
