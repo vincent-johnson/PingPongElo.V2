@@ -36,5 +36,8 @@ namespace PingPong.Entities
 
         [Required]
         public int Weight { get; set; }
+
+        [Required]
+        public double pointSwing { get; set; }
     }
 }

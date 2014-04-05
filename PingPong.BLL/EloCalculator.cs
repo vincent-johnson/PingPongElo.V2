@@ -10,12 +10,12 @@ namespace PingPong.BLL
 {
     public static class EloCalculator
     {
-        public const int StandardDeviationPointsCount=200;
+        public const double StandardDeviationPointsCount=200;
 
         public static double GetPlayerEloChange(double playerElo, double opponentElo, bool playerWon, int weight)
         {
             var chart = new Chart();
-            double playerExpectedScore = chart.DataManipulator.Statistics.NormalDistribution((playerElo - opponentElo) / 200.0);
+            double playerExpectedScore = chart.DataManipulator.Statistics.NormalDistribution((playerElo - opponentElo) / StandardDeviationPointsCount);
             int playerActualScore=playerWon?1:0;
             double ratingChange = weight * (playerActualScore-playerExpectedScore);
             return ratingChange;

@@ -15,6 +15,10 @@ namespace PingPong.Web.Controllers
         // GET: Games
         public ActionResult Index()
         {
+            if (String.IsNullOrEmpty(User.Identity.Name))
+            {
+                return RedirectToAction("Login", "Account");
+            }
             IEnumerable<Game> games;
             if (String.IsNullOrEmpty(User.Identity.Name))
             {
@@ -32,6 +36,10 @@ namespace PingPong.Web.Controllers
         // GET: Games/Details/5
         public ActionResult Details(int id)
         {
+            if (String.IsNullOrEmpty(User.Identity.Name))
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var repo = new PingPongRepository<Game>();
             var game = repo.FindBy(x => x.GameId == id).SingleOrDefault();
             return View(game);
@@ -40,7 +48,11 @@ namespace PingPong.Web.Controllers
         // GET: Games/Create
         public ActionResult Create()
         {
-            var players = PlayerService.GetAllPlayersRestricted();
+            if (String.IsNullOrEmpty(User.Identity.Name))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var players = PlayerService.GetAllPlayersRestricted().Where(b=>b.LoginName!=User.Identity.Name);
             var usernames = new List<string>();
             foreach (Player player in players)
             {
@@ -57,6 +69,10 @@ namespace PingPong.Web.Controllers
         {
             try
             {
+                if (String.IsNullOrEmpty(User.Identity.Name))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
                 Game game=new Game();
                 game.Weight = 30;
                 game.IsRankedGame = true;
@@ -66,14 +82,15 @@ namespace PingPong.Web.Controllers
                 game.DefenderSecondId = -1;
                 game.GameTypeId = 1;
                 var players=PlayerService.GetAllPlayersRestricted();
-                Player defender = players.Where(a => a.LoginName == gamevM.DefenderUsername).FirstOrDefault();
+                Player defender = players.Where(a => a.LoginName == gamevM.OpponenUsername).FirstOrDefault();
                 game.DefenderId = defender.PlayerId;
                 game.DefenderEloRating = (int)defender.CurrentEloRating;
-                Player challenger = players.Where(a => a.LoginName == gamevM.ChallengerUsername).FirstOrDefault();
+                Player challenger = players.Where(a => a.LoginName == User.Identity.Name).FirstOrDefault();
                 game.ChallengerId = challenger.PlayerId;
                 game.ChallengerEloRating = (int)challenger.CurrentEloRating;
-                game.DefenderWon = gamevM.DefenderWonFlag;
+                game.DefenderWon = !gamevM.YouWonFlag;
                 double challengerEloChange=GetChallengerEloChange(game);
+                game.pointSwing = challengerEloChange;
                 GameService.CreateNewGame(game);
                 challenger.CurrentEloRating += challengerEloChange;
                 defender.CurrentEloRating -= challengerEloChange;

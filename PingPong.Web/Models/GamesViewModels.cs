@@ -15,19 +15,16 @@ namespace PingPong.Web.Models
     {
         public IEnumerable<string> Usernames {get;set;}
 
-        [Display(Name = "Challenger")]
+        [Display(Name = "Opponent")]
         [Required]
-        public string ChallengerUsername { get; set; }
-        [Display(Name = "Defender")]
+        public string OpponenUsername { get; set; }
+        [Display(Name = "Did you win?")]
         [Required]
-        public string DefenderUsername { get; set; }
-        [Display(Name = "Defender Won?")]
-        [Required]
-        public bool DefenderWonFlag { get; set; }
+        public bool YouWonFlag { get; set; }
 
-        [Display(Name = "Challenger Score")]
-        public int ChallengerScore { get; set; }
-        [Display(Name = "Defender Score")]
-        public int DefenderScore { get; set; }
+        [Display(Name = "Your Score")]
+        public int YourScore { get; set; }
+        [Display(Name = "Opponent's Score")]
+        public int OpponentScore { get; set; }
     }
 }

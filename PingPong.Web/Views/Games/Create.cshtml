@@ -13,21 +13,15 @@
     <h4>Create a new game.</h4>
     <hr />
     <div class="form-group">
-        @Html.LabelFor(m => m.ChallengerUsername, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.OpponenUsername, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.ChallengerUsername, listitems)
-        </div>
-    </div>   
-    <div class="form-group">
-        @Html.LabelFor(m => m.DefenderUsername, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.DefenderUsername, listitems)
+            @Html.DropDownListFor(m => m.OpponenUsername, listitems)
         </div>
     </div> 
     <div class="form-group">
-        @Html.LabelFor(m => m.DefenderWonFlag, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.YouWonFlag, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.CheckBoxFor(m => m.DefenderWonFlag)
+            @Html.CheckBoxFor(m => m.YouWonFlag)
         </div>
     </div>     
     <div class="form-group">

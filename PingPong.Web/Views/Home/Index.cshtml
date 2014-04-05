@@ -14,10 +14,11 @@
 @for(int i=1;i<=Model.players.Count();i++)
 {
     string name=Model.players.ElementAt(i-1).FirstName+" "+Model.players.ElementAt(i-1).LastName;
+    int currentElo = (int)Model.players.ElementAt(i-1).CurrentEloRating;
     <tr>
         <td><font size="4">@i</font></td>
         <td><font size="4">@name</font></td>
-        <td><font size="4">@Model.players.ElementAt(i-1).CurrentEloRating</font></td>
+        <td><font size="4">@currentElo</font></td>
     </tr>
 }
 
