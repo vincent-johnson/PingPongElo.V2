@@ -19,6 +19,11 @@ namespace PingPong.BLL
             _game = game;
         }
 
+        public GameService()
+        {
+            _repo = new PingPongRepository<Game>();
+        }
+
         public IEnumerable<Game> GetGamesByUsername(int playerId)
         {
             var games = _repo.FindBy(x => x.ChallengerId == playerId || x.DefenderId == playerId)
