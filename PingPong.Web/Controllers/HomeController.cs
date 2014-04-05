@@ -15,7 +15,7 @@ namespace PingPong.Web.Controllers
         public ActionResult Index()
         {
             var vM = new HomeIndexViewModel();
-            vM.players = GetPlayers().ToList();
+            vM.players = GetPlayers().OrderByDescending(d=>d.CurrentEloRating).ToList();
             return View(vM);
         }
 
