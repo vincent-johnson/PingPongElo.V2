@@ -43,14 +43,24 @@ namespace PingPong.BLL
             _repo.Delete(_player.PlayerId);
         }
 
-        public Dictionary<string, double> GetAllPlayersRestricted()
+        /// <summary>
+        /// Returns Player information useful to view
+        /// Indexes are as follows
+        /// [0] = Player Id
+        /// [1] = Player FullName
+        /// [2] = Player Current Elo ranking
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<object> GetAllPlayersRestricted()
         {
             var players = GetAllPlayers();
-            var restrictedPlayers = new Dictionary<string, double>();
+            var restrictedPlayers = new List<object>();
+
             foreach (var player in players)
             {
-                var fullname = GetFullName(player);
-                restrictedPlayers.Add(fullname, player.CurrentEloRating);
+                restrictedPlayers.Add(player.PlayerId);
+                restrictedPlayers.Add(GetFullName(player));
+                restrictedPlayers.Add(player.CurrentEloRating);
             }
             return restrictedPlayers;
         }
@@ -62,7 +72,7 @@ namespace PingPong.BLL
         /// <returns>True or false</returns>
         public bool IsPasswordCorrect(string password)
         {
-            return (_player.Password == password ? true : false);
+            return (_player.Password == password ? true : false); 
         }
 
         /// <summary>
@@ -71,10 +81,15 @@ namespace PingPong.BLL
         /// <returns></returns>
         private string GetFullName(Player player)
         {
-            return player.FirstName + player.LastName;
+            var fullname = string.Format("{0} {1}", player.FirstName, player.LastName);
+            return fullname;
         }
 
-        public IEnumerable<Player> GetAllPlayers()
+        /// <summary>
+        /// Returns all player objects
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<Player> GetAllPlayers()
         {
             var players = _repo.GetAll();
             return players;
