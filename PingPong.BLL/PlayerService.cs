@@ -19,8 +19,6 @@ namespace PingPong.BLL
             _player = player;
         }
 
-
-        
         /// <summary>
         /// Creates a new Player
         /// </summary>
