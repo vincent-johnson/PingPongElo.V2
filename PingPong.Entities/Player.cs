@@ -14,6 +14,8 @@ namespace PingPong.Entities
         [MaxLength(100), Required]
         public string FirstName { get; set; }
         [MaxLength(100), Required]
+        public string LoginName { get; set; }
+        [MaxLength(100), Required]
         public string LastName { get; set; }
         [MaxLength(100)]
         public string NickName { get; set; }

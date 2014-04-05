@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
 using PingPong.Web.Models;
+using PingPong.BLL;
+using PingPong.Entities;
 
 namespace PingPong.Web.Controllers
 {
@@ -92,8 +94,20 @@ namespace PingPong.Web.Controllers
             {
                 var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                Player myPlayer = new Player();
+                myPlayer.LoginName = model.Email;
+                myPlayer.Password = model.Password;
+                myPlayer.FirstName = "Cool";
+                myPlayer.LastName = "Guy";
+                myPlayer.CurrentEloRating = 1500;
+                myPlayer.Department = "Engineering";
+                myPlayer.Active = true;
+                myPlayer.IsAdmin = true;
+                PlayerService playerService = new PlayerService(myPlayer);
+                playerService.CreateNewPlayer();
                 if (result.Succeeded)
                 {
+
                     await SignInAsync(user, isPersistent: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

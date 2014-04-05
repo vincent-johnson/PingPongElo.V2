@@ -29,6 +29,13 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="Local Deploy" Order="1">
+          <Destination Path="Data Source=localhost\SQL2012SERVER%3bInitial Catalog=PingPongDB%3bUser ID=sa%3bPassword=titp4sa" />
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -234,6 +241,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PingPong.BLL\PingPong.BLL.csproj">
+      <Project>{7a0643d7-8b3e-4107-a23c-7b9087374d26}</Project>
+      <Name>PingPong.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PingPong.Data\PingPong.Data.csproj">
       <Project>{4ec47171-9652-461e-868f-b22602d0f6da}</Project>
       <Name>PingPong.Data</Name>
