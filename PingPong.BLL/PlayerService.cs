@@ -54,13 +54,11 @@ namespace PingPong.BLL
         public IEnumerable<Player> GetAllPlayersRestricted()
         {
             var players = GetAllPlayers();
-            var restrictedPlayers = new List<Player>();
-
             foreach (var player in players)
             {
                 player.Password = "cheeseburgerlova";
             }
-            return restrictedPlayers;
+            return players;
         }
 
         /// <summary>
