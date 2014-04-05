@@ -1,25 +1,38 @@
 ﻿@model PingPong.Web.Models.HomeIndexViewModel
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "STAPPPP Home";
 }
 
 <div class="jumbotron">
-    <h1>TEST YOUR MIGHT</h1>
+    <div class="text-center">
+        <h1>TEST YOUR MIGHT</h1>
+    </div>
     <p class="lead">STAPPPP is a tool for recording and comparing the ping-pong playing performance of Accruent employees.  Below are the players and their current ratings.
     </p>
 </div>
-<table border="1" style="width:600px">
 
-<tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td></tr>
-@for(int i=1;i<=Model.players.Count();i++)
-{
-    string name=Model.players.ElementAt(i-1).FirstName+" "+Model.players.ElementAt(i-1).LastName;
-    int currentElo = (int)Model.players.ElementAt(i-1).CurrentEloRating;
-    <tr>
-        <td><font size="4">@i</font></td>
-        <td><font size="4">@name</font></td>
-        <td><font size="4">@currentElo</font></td>
-    </tr>
-}
+<hr/>
+<div class="container">
+    <div class="text-center">
+        <h2>Current Player Rankings</h2>
+    </div>
+</div>
+<div class="container">
+    <div class="text-center">
+        <table class="table table-bordered">
 
-</table>
+            <tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td></tr>
+            @for (int i = 1; i <= Model.players.Count(); i++)
+            {
+                string name = Model.players.ElementAt(i - 1).FirstName + " " + Model.players.ElementAt(i - 1).LastName;
+                int currentElo = (int)Model.players.ElementAt(i - 1).CurrentEloRating;
+                <tr>
+                    <td><font size="4">@i</font></td>
+                    <td><font size="4">@name</font></td>
+                    <td><font size="4">@currentElo</font></td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
