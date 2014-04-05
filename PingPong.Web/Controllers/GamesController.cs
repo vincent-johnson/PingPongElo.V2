@@ -15,6 +15,7 @@ namespace PingPong.Web.Controllers
         // GET: Games
         public ActionResult Index()
         {
+            int playerId = -1;
             if (String.IsNullOrEmpty(User.Identity.Name))
             {
                 return RedirectToAction("Login", "Account");
@@ -26,10 +27,14 @@ namespace PingPong.Web.Controllers
             }
             else
             {
-                games = GetGames(User.Identity.Name);
+                playerId = GetPlayerId(User.Identity.Name);
+                games = GetGames(playerId).OrderByDescending(d=>d.GameId);
             }
+            IEnumerable<Player> players= PlayerService.GetAllPlayersRestricted();
             var a = new GamesIndexViewModel();
             a.games = games;
+            a.PlayerId = playerId;
+            a.players = players;
             return View(a);
         }
 
@@ -156,10 +161,14 @@ namespace PingPong.Web.Controllers
             }
         }
 
-        private IEnumerable<Game> GetGames(string username)
+        private IEnumerable<Game> GetGames(int playerId)
         {
-            var player=PlayerService.GetAllPlayersRestricted().Where(a => a.LoginName == username).FirstOrDefault();
-            return GameService.GetGamesByPlayerId(player.PlayerId);
+            return GameService.GetGamesByPlayerId(playerId);
+        }
+
+        private int GetPlayerId(string username)
+        {
+            return PlayerService.GetAllPlayersRestricted().Where(a => a.LoginName == username).FirstOrDefault().PlayerId;
         }
 
         private double GetChallengerEloChange(Game game)

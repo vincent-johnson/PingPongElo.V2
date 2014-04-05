@@ -10,6 +10,8 @@ namespace PingPong.Web.Models
     public class GamesIndexViewModel
     {
         public IEnumerable<Game> games { get; set; }
+        public int PlayerId { get; set; }
+        public IEnumerable<Player> players { get; set; }
     }
     public class GamesCreateViewModel
     {

@@ -1,17 +1,34 @@
-﻿@model PingPong.Web.Models.GamesIndexViewModel
+﻿@using PingPong.Entities
+@model PingPong.Web.Models.GamesIndexViewModel
 @{
     ViewBag.Title = "Games List";
 }
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 <p>Come to revel in your victories or wallow in your defeats?  See the below list for a view into your historical game performance.</p>
-<table border="1" style="width:300px">
-<tr><td>GameId</td><td>Outcome</td></tr>
+<table border="1" style="width:600px">
+<tr><td>GameId</td><td>Date Entered</td><td>Outcome</td><td>Rating Change</td><td>Opponent</td></tr>
 @foreach (var game in Model.games)
 {
+
+    bool playerIsChallenger;
+    bool youWon;
+    playerIsChallenger=(Model.PlayerId==game.ChallengerId);
+    youWon=(playerIsChallenger!=game.DefenderWon);
+    string outcomeString=youWon?"Glorious Victory!":"Ignoble Defeat";
+    Player opponent=Model.players.Where(a=>a.PlayerId==(playerIsChallenger?game.DefenderId:game.ChallengerId)).FirstOrDefault();
+    string opponentName="N/A";
+    int pointSwing=(int)(playerIsChallenger?game.pointSwing:-game.pointSwing);
+    if(opponent!=null) 
+    {
+        opponentName=opponent.FirstName+" "+opponent.LastName;
+    }
     <tr>
         <td>@game.GameId</td>
-        <td>@game.DefenderWon</td>
+        <td>@game.GamePlayedDate.ToString("d")</td>
+        <td>@outcomeString</td>
+        <td>@pointSwing</td>
+        <td>@opponentName</td>
     </tr>
 }
 </table>
