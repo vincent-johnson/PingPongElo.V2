@@ -15,7 +15,15 @@ namespace PingPong.Web.Controllers
         // GET: Games
         public ActionResult Index()
         {
-            IEnumerable<Game> games= GetGames(User.Identity.Name);
+            IEnumerable<Game> games;
+            if (String.IsNullOrEmpty(User.Identity.Name))
+            {
+                games = new List<Game>();
+            }
+            else
+            {
+                games = GetGames(User.Identity.Name);
+            }
             var a = new GamesIndexViewModel();
             a.games = games;
             return View(a);
@@ -32,8 +40,7 @@ namespace PingPong.Web.Controllers
         // GET: Games/Create
         public ActionResult Create()
         {
-            var ps = new PlayerService(new Player());
-            var players = ps.GetAllPlayersRestricted();
+            var players = PlayerService.GetAllPlayersRestricted();
             var usernames = new List<string>();
             foreach (Player player in players)
             {
@@ -57,8 +64,7 @@ namespace PingPong.Web.Controllers
                 game.ChallengerSecondId = -1;
                 game.DefenderSecondId = -1;
                 game.GameTypeId = 1;
-                PlayerService ps = new PlayerService(new Player());
-                var players=ps.GetAllPlayersRestricted();
+                var players=PlayerService.GetAllPlayersRestricted();
                 Player defender = players.Where(a => a.LoginName == gamevM.DefenderUsername).FirstOrDefault();
                 game.DefenderId = defender.PlayerId;
                 game.DefenderEloRating = (int)defender.CurrentEloRating;
@@ -66,14 +72,13 @@ namespace PingPong.Web.Controllers
                 game.ChallengerId = challenger.PlayerId;
                 game.ChallengerEloRating = (int)challenger.CurrentEloRating;
                 game.DefenderWon = gamevM.DefenderWonFlag;
-                GameService gs = new GameService(game);
-                gs.CreateNewGame();
+                GetChallengerEloChange(game);
+                GameService.CreateNewGame(game);
                 return RedirectToAction("Index");
             }
             catch
             {
-                var ps = new PlayerService(new Player());
-                var players = ps.GetAllPlayersRestricted();
+                var players = PlayerService.GetAllPlayersRestricted();
                 var usernames = new List<string>();
                 foreach (Player player in players)
                 {
@@ -131,10 +136,13 @@ namespace PingPong.Web.Controllers
 
         private IEnumerable<Game> GetGames(string username)
         {
-            PlayerService ps = new PlayerService(new Player());
-            GameService gs = new GameService();
-            var player=ps.GetAllPlayersRestricted().Where(a => a.LoginName == username).FirstOrDefault();
-            return gs.GetGamesByPlayerId(player.PlayerId);
+            var player=PlayerService.GetAllPlayersRestricted().Where(a => a.LoginName == username).FirstOrDefault();
+            return GameService.GetGamesByPlayerId(player.PlayerId);
+        }
+
+        private double GetChallengerEloChange(Game game)
+        {
+            return EloCalculator.GetPlayerEloChange(game.ChallengerEloRating, game.DefenderEloRating, !game.DefenderWon, game.Weight);
         }
     }
 }

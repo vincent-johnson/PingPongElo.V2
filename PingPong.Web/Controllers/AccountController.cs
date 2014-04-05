@@ -106,8 +106,7 @@ namespace PingPong.Web.Controllers
                     myPlayer.Department = model.Department;
                     myPlayer.Active = true;
                     myPlayer.IsAdmin = false;
-                    PlayerService playerService = new PlayerService(myPlayer);
-                    playerService.CreateNewPlayer();
+                    PlayerService.CreateNewPlayer(myPlayer);
                     await SignInAsync(user, isPersistent: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

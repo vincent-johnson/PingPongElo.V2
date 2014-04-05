@@ -35,8 +35,7 @@ namespace PingPong.Web.Controllers
 
         public IEnumerable<Player> GetPlayers()
         { 
-            PlayerService pService = new PlayerService(new Player());
-            return pService.GetAllPlayersRestricted(); //User.Identity.GetUserName();
+            return PlayerService.GetAllPlayersRestricted(); //User.Identity.GetUserName();
         }
     }
 }

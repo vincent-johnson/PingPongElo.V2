@@ -10,26 +10,20 @@ namespace PingPong.BLL
 {
     public class GameService
     {
-        private readonly IPingPongRepository<Game> _repo;
-        private readonly Game _game;
+        private static readonly IPingPongRepository<Game> _repo;
 
-        public GameService(Game game)
-        {
-            _repo = new PingPongRepository<Game>();
-            _game = game;
-        }
-
-        public GameService()
+        static GameService()
         {
             _repo = new PingPongRepository<Game>();
         }
+
 
         /// <summary>
         /// Returns all games associated with player id
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
-        public IEnumerable<Game> GetGamesByPlayerId(int playerId)
+        public static IEnumerable<Game> GetGamesByPlayerId(int playerId)
         {
             var games = _repo.FindBy(x => x.ChallengerId == playerId || x.DefenderId == playerId)
                         .ToList();
@@ -42,7 +36,7 @@ namespace PingPong.BLL
         /// <param name="playerScore"></param>
         /// <param name="opponentScore"></param>
         /// <returns></returns>
-        public bool playerWon(int playerScore, int opponentScore)
+        public static bool playerWon(int playerScore, int opponentScore)
         {
             return (playerScore > opponentScore ? true : false);
         }
@@ -50,26 +44,26 @@ namespace PingPong.BLL
         /// <summary>
         /// Updates an existing game
         /// </summary>
-        public void UpdateExistingGame()
+        public static void UpdateExistingGame(Game game)
         {
-            _repo.Update(_game);
+            _repo.Update(game);
         }
 
         /// <summary>
         /// Creates a new game
         /// </summary>
-        public void CreateNewGame()
+        public static void CreateNewGame(Game game)
         {
-            _repo.Create(_game);
+            _repo.Create(game);
         }
 
 
         /// <summary>
         /// Deletes an existing game
         /// </summary>
-        public void DeleteExistingGame()
+        public static void DeleteExistingGame(Game game)
         {
-            _repo.Delete(_game);
+            _repo.Delete(game.GameId);
         }
     }
 }

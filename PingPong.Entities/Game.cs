@@ -34,5 +34,7 @@ namespace PingPong.Entities
         [Required]
         public bool IsRankedGame { get; set; }
 
+        [Required]
+        public int Weight { get; set; }
     }
 }

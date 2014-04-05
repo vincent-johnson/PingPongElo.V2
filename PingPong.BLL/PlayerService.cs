@@ -8,46 +8,44 @@ using System.Threading.Tasks;
 
 namespace PingPong.BLL
 {
-    public class PlayerService
+    public static class PlayerService
     {
-        private readonly IPingPongRepository<Player> _repo;
-        private readonly Player _player;
+        private static readonly IPingPongRepository<Player> _repo;
 
-        public PlayerService(Player player)
+        static PlayerService()
         {
             _repo = new PingPongRepository<Player>();
-            _player = player;
         }
 
         /// <summary>
         /// Creates a new Player
         /// </summary>
-        public void CreateNewPlayer()
+        public static void CreateNewPlayer(Player player)
         {
-            _repo.Create(_player);
+            _repo.Create(player);
         }
 
         /// <summary>
         /// Updates an existing Player
         /// </summary>
-        public void UpdateExistingPlayer()
+        public static void UpdateExistingPlayer(Player player)
         {
-            _repo.Update(_player);
+            _repo.Update(player);
         }
 
         /// <summary>
         /// Deletes an existing Player
         /// </summary>
-        public void DeleteExistingPlayer()
+        public static void DeleteExistingPlayer(Player player)
         {
-            _repo.Delete(_player.PlayerId);
+            _repo.Delete(player.PlayerId);
         }
 
         /// <summary>
         /// Returns Player without password info
         ///  </summary>
         /// <returns></returns>
-        public IEnumerable<Player> GetAllPlayersRestricted()
+        public static IEnumerable<Player> GetAllPlayersRestricted()
         {
             var players = GetAllPlayers();
             foreach (var player in players)
@@ -62,16 +60,16 @@ namespace PingPong.BLL
         /// </summary>
         /// <param name="password">User's input password</param>
         /// <returns>True or false</returns>
-        public bool IsPasswordCorrect(string password)
+        public static bool IsPasswordCorrect(Player player, string password)
         {
-            return (_player.Password == password ? true : false); 
+            return (player.Password == password ? true : false); 
         }
 
         /// <summary>
         /// Returns Player's first and last name
         /// </summary>
         /// <returns></returns>
-        private string GetFullName(Player player)
+        private static string GetFullName(Player player)
         {
             var fullname = string.Format("{0} {1}", player.FirstName, player.LastName); //NOTE: This method is currently not used in anywhere
             return fullname;
@@ -81,7 +79,7 @@ namespace PingPong.BLL
         /// Returns all player objects
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<Player> GetAllPlayers()
+        private static IEnumerable<Player> GetAllPlayers()
         {
             var players = _repo.GetAll();
             return players;
@@ -92,7 +90,7 @@ namespace PingPong.BLL
         /// </summary>
         /// <param name="password">Player's password</param>
         /// <returns></returns>
-        public Player GetPlayerByPassword(string password)
+        public static Player GetPlayerByPassword(string password)
         {
             var player = _repo.FindBy(x => x.Password == password)
                          .SingleOrDefault();
