@@ -10,6 +10,11 @@ namespace PingPong.Data
 {
     public class PingPongContext : DbContext
     {
+        public PingPongContext()
+            :base("STAPPPP")
+        {
+                
+        }
         public DbSet<Elo> Elos { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<GameType> GameTypes { get; set; }
