@@ -24,11 +24,52 @@ namespace PingPong.BLL
             _repo = new PingPongRepository<Game>();
         }
 
-        public IEnumerable<Game> GetGamesByUsername(int playerId)
+        /// <summary>
+        /// Returns all games associated with player id
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public IEnumerable<Game> GetGamesByPlayerId(int playerId)
         {
             var games = _repo.FindBy(x => x.ChallengerId == playerId || x.DefenderId == playerId)
                         .ToList();
             return games;
+        }
+
+        /// <summary>
+        /// Determines if player won game
+        /// </summary>
+        /// <param name="playerScore"></param>
+        /// <param name="opponentScore"></param>
+        /// <returns></returns>
+        public bool playerWon(int playerScore, int opponentScore)
+        {
+            return (playerScore > opponentScore ? true : false);
+        }
+
+        /// <summary>
+        /// Updates an existing game
+        /// </summary>
+        public void UpdateExistingGame()
+        {
+            _repo.Update(_game);
+        }
+
+        /// <summary>
+        /// Creates a new game
+        /// </summary>
+        public void CreateNewGame()
+        {
+            _repo.Create(_game);
+        }
+
+
+        /// <summary>
+        /// Deletes an existing game
+        /// </summary>
+        public void DeleteExistingGame()
+        {
+            _repo.Delete(_game);
         }
     }
 }
