@@ -1,8 +1,10 @@
 ﻿@model PingPong.Web.Models.GamesIndexViewModel
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Games List";
 }
-
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+<p>Come to revel in your victories or wallow in your defeats?  See the below list for a view into your historical game performance.</p>
 <table border="1" style="width:300px">
 <tr><td>GameId</td><td>Outcome</td></tr>
 @foreach (var game in Model.games)
