@@ -10,7 +10,7 @@ namespace PingPong.Entities
     public class GameType
     {
         [Key]
-        public int Id { get; set; }
+        public int GameTypeId { get; set; }
         [MaxLength(100)]
         public string GameTypeName { get; set; }
 

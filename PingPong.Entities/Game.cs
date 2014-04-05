@@ -10,7 +10,7 @@ namespace PingPong.Entities
     public class Game
     {
         [Key]
-        public int Id { get; set; }
+        public int GameId { get; set; }
         [Required]
         public int ChallengerId { get; set; }
         [Required]

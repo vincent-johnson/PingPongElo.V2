@@ -10,7 +10,7 @@ namespace PingPong.Entities
     public class Player
     {
         [Key]
-        public int Id { get; set; }
+        public int PlayerId { get; set; }
         [MaxLength(100), Required]
         public string FirstName { get; set; }
         [MaxLength(100), Required]
@@ -27,5 +27,6 @@ namespace PingPong.Entities
         public int CurrentEloRating { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
+
     }
 }

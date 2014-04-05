@@ -10,7 +10,7 @@ namespace PingPong.Entities
     public class Elo
     {
         [Key]
-        public int Id { get; set; }
+        public int EloId { get; set; }
         [Required]
         public int UserId { get; set; }
         [Required]
