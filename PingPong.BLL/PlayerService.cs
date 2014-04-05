@@ -51,16 +51,14 @@ namespace PingPong.BLL
         /// [2] = Player Current Elo ranking
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<object> GetAllPlayersRestricted()
+        public IEnumerable<Player> GetAllPlayersRestricted()
         {
             var players = GetAllPlayers();
-            var restrictedPlayers = new List<object>();
+            var restrictedPlayers = new List<Player>();
 
             foreach (var player in players)
             {
-                restrictedPlayers.Add(player.PlayerId);
-                restrictedPlayers.Add(GetFullName(player));
-                restrictedPlayers.Add(player.CurrentEloRating);
+                player.Password = "cheeseburgerlova";
             }
             return restrictedPlayers;
         }
@@ -93,6 +91,18 @@ namespace PingPong.BLL
         {
             var players = _repo.GetAll();
             return players;
+        }
+
+        /// <summary>
+        /// Returns player based on password
+        /// </summary>
+        /// <param name="password">Player's password</param>
+        /// <returns></returns>
+        public Player GetPlayerByPassword(string password)
+        {
+            var player = _repo.FindBy(x => x.Password == password)
+                         .SingleOrDefault();
+            return player;
         }
     }
 }
