@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Elo.cs" />
+    <Compile Include="GameService.cs" />
     <Compile Include="PlayerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
