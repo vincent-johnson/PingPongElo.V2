@@ -21,7 +21,7 @@ namespace PingPong.Web.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "STAPPPP: The greatest system of our generation?";
 
             return View();
         }
