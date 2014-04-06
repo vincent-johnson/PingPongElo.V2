@@ -4,53 +4,53 @@
 }
 
 
+<hr/>
 <div class="jumbotron">
     <div class="text-center">
         <h1>Welcome to STAPPPP</h1>
         (<b>S</b>ytem for <b>T</b>racking <b>A</b>ccruent <b>P</b>ing-<b>P</b>ong <b>P</b>layer <b>P</b>erformance)
     </div>
 </div>
+
 <div class="container">
     <div class="text-center">
-        <h1>DEFEND YOUR HONOR</h1>
+        <ul class="list-unstyled">
+            <li><h3>Register a User</h3></li>
+            <li><h3>Play matches</h3></li>
+            <li><h3>....</h3></li>
+            <li><h3>Profit</h3></li>
+            <hr/>
+        </ul>
+        <div class="panel-group" id="accordion">
+            <div class="panel" style="border-color: #000000">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <b>View Current Player Rankings</b>
+                        </a>
+                    </div>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td></tr>
+                            @for (int i = 1; i <= Model.players.Count(); i++)
+                            {
+                                string name = Model.players.ElementAt(i - 1).FirstName + " " + Model.players.ElementAt(i - 1).LastName;
+                                int currentElo = (int)Model.players.ElementAt(i - 1).CurrentEloRating;
+                                <tr>
+                                    <td><font size="4">@i</font></td>
+                                    <td><font size="4">@name</font></td>
+                                    <td><font size="4">@currentElo</font></td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <hr/>
-    <ul class="list-unstyled">
-        <li><h3>Step 1: Register a User and start playing matches</h3></li>
-        <li><h3>Step 2: Win matches</h3></li>
-        <li><h3>Step 3: ....</h3></li>
-        <li><h3>Step 4: Profit.</h3></li>
-
-    </ul>
-    
 </div>
 
 <hr/>
-<div class="container">
-    <div class="text-center">
-        <div class="pad-upper pad-bottom">
-            <p>STAPPPP is a tool for recording and comparing the ping-pong playing performance of Accruent employees.  Below are the players and their current ratings.</p>
-        </div>
-        <hr/>
-        <h1>Current Player Rankings</h1>
-    </div>
-</div>
-<div class="container">
-    <div class="text-center">
-        <table class="table table-bordered">
-
-            <tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td></tr>
-            @for (int i = 1; i <= Model.players.Count(); i++)
-            {
-                string name = Model.players.ElementAt(i - 1).FirstName + " " + Model.players.ElementAt(i - 1).LastName;
-                int currentElo = (int)Model.players.ElementAt(i - 1).CurrentEloRating;
-                <tr>
-                    <td><font size="4">@i</font></td>
-                    <td><font size="4">@name</font></td>
-                    <td><font size="4">@currentElo</font></td>
-                </tr>
-            }
-
-        </table>
-    </div>
-</div>
+<hr />
