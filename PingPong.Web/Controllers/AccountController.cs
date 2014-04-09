@@ -13,6 +13,7 @@ using Owin;
 using PingPong.Web.Models;
 using PingPong.BLL;
 using PingPong.Entities;
+using System.Net.Mail;
 
 namespace PingPong.Web.Controllers
 {
@@ -108,13 +109,18 @@ namespace PingPong.Web.Controllers
                     myPlayer.IsAdmin = false;
                     PlayerService.CreateNewPlayer(myPlayer);
                     await SignInAsync(user, isPersistent: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    SmtpClient myClient = new SmtpClient("smtp.gmail.com", 587);
+                    myClient.UseDefaultCredentials = false;
+                    myClient.EnableSsl = true;
+                    myClient.Credentials = new System.Net.NetworkCredential("pstapppp@gmail.com", "ClintIsASillyWabbit");
+                    string to = user.Email;
+                    string from = "pstapppp@gmail.com";
+                    string subject = "WELCOME TO STAPPPPP";
+                    string body = "Welcome to STAPPPP.  The world is now your oyster, and the ping-pong paddle is your oyster-opening knife.  Please confirm your account by visiting this URL: " + callbackUrl;
+                    MailMessage message = new MailMessage(from, to, subject, body);
+                    myClient.Send(message);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -126,7 +132,6 @@ namespace PingPong.Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
