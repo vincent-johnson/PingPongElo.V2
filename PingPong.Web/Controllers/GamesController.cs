@@ -145,6 +145,17 @@ namespace PingPong.Web.Controllers
             return View();
         }
 
+        public ActionResult RatingCalculator()
+        {
+            return View(new RatingCalculatorViewModel() { YourRating=1500,OpponentRating=1500});
+        }
+        [HttpPost]
+        public ActionResult RatingCalculator(RatingCalculatorViewModel vM)
+        {
+            vM.MyRatingChange = EloCalculator.GetPlayerEloChange(vM.YourRating, vM.OpponentRating, vM.YouWonFlag, 30);
+            return View(vM);
+        }
+
         // POST: Games/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
