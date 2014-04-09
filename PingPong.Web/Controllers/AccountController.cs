@@ -179,18 +179,27 @@ namespace PingPong.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)// || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     ModelState.AddModelError("", "The user either does not exist or is not confirmed.");
                     return View();
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                SmtpClient myClient = new SmtpClient("smtp.gmail.com", 587);
+                myClient.UseDefaultCredentials = false;
+                myClient.EnableSsl = true;
+                myClient.Credentials = new System.Net.NetworkCredential("pstapppp@gmail.com", "ClintIsASillyWabbit");
+                string to = user.Email;
+                string from = "pstapppp@gmail.com";
+                string subject = "STAPPPP password: Forgettable as Chris Farley's career?";
+                string body = "You forgot your password.  Acknowledge your shame and move on by clicking the following link to reset your password: " + callbackUrl;
+                MailMessage message = new MailMessage(from, to, subject, body);
+                myClient.Send(message);
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+
             }
 
             // If we got this far, something failed, redisplay form

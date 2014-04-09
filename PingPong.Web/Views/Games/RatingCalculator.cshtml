@@ -1,0 +1,50 @@
+﻿@model PingPong.Web.Models.RatingCalculatorViewModel
+@{
+    ViewBag.Title = "Rating Calculator";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("RatingCalculator", "Games", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>See the hypothetical score change resulting from a match.</h4>
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(m => m.YourRating, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.YourRating, new { type = "number"})
+        </div>
+    </div> 
+    <div class="form-group">
+        @Html.LabelFor(m => m.OpponentRating, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.OpponentRating, new { type = "number"})
+        </div>
+    </div>    
+        <div class="form-group">
+        @Html.LabelFor(m => m.YouWonFlag, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(m => m.YouWonFlag)
+        </div>
+    </div>    
+    if (Model != null && Model.MyRatingChange != null)
+    {
+        int a = (int)Model.MyRatingChange;
+        <div>
+            @Html.LabelFor(m => m.MyRatingChange, new { @class = "col-md-2 control-label" })
+            <div>
+                @a
+            </div>
+        </div>   
+    } 
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Calculate!" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

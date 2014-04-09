@@ -68,4 +68,20 @@ namespace PingPong.Web.Models
                 throw new Exception("Make this a pretty popup saying user's latest game was not opponent's latest game");
         }   
     }
+
+    public class RatingCalculatorViewModel
+    {
+        [Display(Name = "Your Rating")]
+        [Required]
+        public int YourRating { get; set; }
+        [Display(Name = "Opponent Rating")]
+        [Required]
+        public int OpponentRating{ get; set; }
+        [Display(Name = "Did you win?")]
+        [Required]
+        public bool YouWonFlag { get; set; }
+        [Display(Name = "My Rating Change (in points)")]
+        [Required]
+        public double? MyRatingChange { get; set; }
+    }
 }
