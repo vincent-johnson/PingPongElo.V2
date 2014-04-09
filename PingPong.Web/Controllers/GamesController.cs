@@ -151,12 +151,6 @@ namespace PingPong.Web.Controllers
             }
         }
 
-        // GET: Games/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: Games/Delete/5
         [HttpPost]
         public ActionResult Delete(int id)
