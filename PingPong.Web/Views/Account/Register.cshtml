@@ -8,6 +8,7 @@
 {
     @Html.AntiForgeryToken()
     <h4>Create a new account.  For security, please use an Accruent domain e-mail account to register.</h4>
+    <h4>Password requirements are as follows:  <br /> password must contain at least 7 characters including 1 lowercase letter, 1 uppercase letter, 1 number, and 1 non-alphanumeric character.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
