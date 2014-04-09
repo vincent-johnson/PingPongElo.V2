@@ -50,8 +50,9 @@ namespace PingPong.Web.Models
         public void DeleteLatestGame()
         {
             var challengerLatestGame = GameService.FindLatestGameByUserId(_game.ChallengerId);
+            var defenderLatestGame = GameService.FindLatestGameByUserId(_game.DefenderId);
 
-            if (_game.GameId == challengerLatestGame.GameId)
+            if (defenderLatestGame.GameId == challengerLatestGame.GameId)
             {
                 var pointsToDevalue = _game.pointSwing;
                 var defender = PlayerService.GetPlayerById(_game.DefenderId);

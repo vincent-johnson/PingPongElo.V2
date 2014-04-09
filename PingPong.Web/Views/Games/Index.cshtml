@@ -78,6 +78,7 @@
                     </div>
                     <div class="modal-body text-center">
                         Are you sure you want to delete your most recent match?
+                        (Be aware this is a beta feature, do so at your own peril)
                     </div>
                     <div class="modal-footer">
                             @using (Html.BeginForm("Delete", "Games", new {id = Model.LatestGame.GameId}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
