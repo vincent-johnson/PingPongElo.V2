@@ -48,7 +48,7 @@ namespace PingPong.Data
         public virtual void Delete(object id)
         {
             T entity = _dbSet.Find(id);
-            Delete(entity);
+            _dbSet.Remove(entity);
             _context.SaveChanges();
         }
     }

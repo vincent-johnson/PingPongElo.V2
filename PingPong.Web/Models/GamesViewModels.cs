@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
+using PingPong.BLL;
+using PingPong.Data;
 using PingPong.Entities;
 
 namespace PingPong.Web.Models
@@ -12,6 +15,11 @@ namespace PingPong.Web.Models
         public IEnumerable<Game> games { get; set; }
         public int PlayerId { get; set; }
         public IEnumerable<Player> players { get; set; }
+        public int? DeletedGamesCounter { get; set; }
+        public Game LatestGame { get; set; }
+        public string OpponentFullName { get; set; }
+        public int OpponentId { get; set; }
+        public int GameCount { get; set; }
     }
     public class GamesCreateViewModel
     {
@@ -28,5 +36,36 @@ namespace PingPong.Web.Models
         public int YourScore { get; set; }
         [Display(Name = "Opponent's Score")]
         public int OpponentScore { get; set; }
+    }
+
+    public class GamesDeleteViewModel
+    {
+        private readonly Game _game;
+
+        public GamesDeleteViewModel(Game game)
+        {
+            _game = game;
+        }
+
+        public void DeleteLatestGame()
+        {
+            var challengerLatestGame = GameService.FindLatestGameByUserId(_game.ChallengerId);
+
+            if (_game.GameId == challengerLatestGame.GameId)
+            {
+                var pointsToDevalue = _game.pointSwing;
+                var defender = PlayerService.GetPlayerById(_game.DefenderId);
+                var challenger = PlayerService.GetPlayerById(_game.ChallengerId);
+
+                challenger.CurrentEloRating -= pointsToDevalue;
+                defender.CurrentEloRating += pointsToDevalue;
+
+                PlayerService.UpdateExistingPlayer(challenger);
+                PlayerService.UpdateExistingPlayer(defender);
+                GameService.DeleteExistingGame(_game); 
+            }
+            else
+                throw new Exception("Make this a pretty popup saying user's latest game was not opponent's latest game");
+        }   
     }
 }

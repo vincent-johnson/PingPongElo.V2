@@ -1,8 +1,13 @@
-﻿@using PingPong.Entities
+﻿@using System.Activities.Statements
+@using System.Security.Cryptography
+@using PingPong.BLL
+@using PingPong.Entities
+@using PingPong.Web.Models
 @model PingPong.Web.Models.GamesIndexViewModel
 @{
     ViewBag.Title = "Games List";
 }
+
 
 <div class="container">
     <h2>@ViewBag.Title</h2>
@@ -10,7 +15,7 @@
     <p>Come to revel in your victories or wallow in your defeats?  See the below list for a view into your historical game performance.</p>
     <div class="text-center">
         <table class="table table-bordered table-striped">
-            <tr><td>GameId</td><td>Date Entered</td><td>Outcome</td><td>Rating Change</td><td>Opponent</td></tr>
+            <tr><td>Game Number</td><td>Date Entered</td><td>Outcome</td><td>Rating Change</td><td>Opponent</td></tr>
             @foreach (var game in Model.games)
             {
 
@@ -49,4 +54,48 @@
             }
         </table>        
     </div>
+    
+    @if (Model.GameCount > 0)
+    {
+        <!-- Button trigger modal -->
+        <div class="pull-right">
+            <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">
+                Delete your most recent game
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <div class="text-center">
+                            <h4 class="modal-title" id="myModalLabel">
+                                Game Deletion
+                            </h4>    
+                        </div>
+                    </div>
+                    <div class="modal-body text-center">
+                        Are you sure you want to delete your most recent match?
+                    </div>
+                    <div class="modal-footer">
+                            @using (Html.BeginForm("Delete", "Games", new {id = Model.LatestGame.GameId}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+                            {
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                if (Model.DeletedGamesCounter < 1)
+                                {
+                                    <button type="submit" class="btn btn-danger">Delete match</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-default">You have already deleted your latest game</button>
+                                }
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+

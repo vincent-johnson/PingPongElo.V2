@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using Microsoft.Ajax.Utilities;
+using Owin;
 using PingPong.BLL;
 using PingPong.Data;
 using PingPong.Entities;
@@ -13,7 +16,7 @@ namespace PingPong.Web.Controllers
     public class GamesController : Controller
     {
         // GET: Games
-        public ActionResult Index()
+        public ActionResult Index(int? counter)
         {
             int playerId = -1;
             if (String.IsNullOrEmpty(User.Identity.Name))
@@ -21,6 +24,7 @@ namespace PingPong.Web.Controllers
                 return RedirectToAction("Login", "Account");
             }
             IEnumerable<Game> games;
+            var a = new GamesIndexViewModel();
             if (String.IsNullOrEmpty(User.Identity.Name))
             {
                 games = new List<Game>();
@@ -31,10 +35,18 @@ namespace PingPong.Web.Controllers
                 games = GetGames(playerId).OrderByDescending(d=>d.GameId);
             }
             IEnumerable<Player> players= PlayerService.GetAllPlayersRestricted();
-            var a = new GamesIndexViewModel();
+            
             a.games = games;
             a.PlayerId = playerId;
             a.players = players;
+            a.DeletedGamesCounter = counter.HasValue ? counter : 0;
+            a.GameCount = games.Count();
+            if (games.Any())
+            {
+                a.LatestGame = GameService.FindLatestGameByUserId(a.PlayerId);
+                a.OpponentId = a.LatestGame.DefenderId == a.PlayerId? a.LatestGame.ChallengerId: a.LatestGame.DefenderId;
+                a.OpponentFullName = PlayerService.GetPlayerFullNameById(a.OpponentId);
+            }
             return View(a);
         }
 
@@ -139,27 +151,35 @@ namespace PingPong.Web.Controllers
             }
         }
 
-        // GET: Games/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: Games/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                var game = GameService.GetGameById(id);
+                var gameVm = new GamesDeleteViewModel(game);
+                gameVm.DeleteLatestGame();
+                return RedirectToAction("Index", new { counter = 1});
             }
             catch
             {
                 return View();
             }
         }
+
+        //[HttpPost]
+        //public ActionResult Delete(int id)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         private IEnumerable<Game> GetGames(int playerId)
         {

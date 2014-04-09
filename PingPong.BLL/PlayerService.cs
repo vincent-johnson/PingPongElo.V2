@@ -109,5 +109,26 @@ namespace PingPong.BLL
                            .SingleOrDefault();
             return fullname;
         }
+
+        public static string GetPlayerFullNameById(int id)
+        {
+            var fullname = _repo.FindBy(x => x.PlayerId == id)
+                            .Select(x => x.FirstName + " " + x.LastName)
+                            .SingleOrDefault();
+            return fullname;
+        }
+
+        public static Player GetPlayerById(int id)
+        {
+            var player = _repo.FindBy(x => x.PlayerId == id)
+                        .SingleOrDefault();
+            return player;
+        }
+
+        public static bool IsCorrectPassword(int id, string password)
+        {
+            var pw = _repo.FindBy(x => x.PlayerId == id).Select(x => x.Password).SingleOrDefault();
+            return password == pw;
+        }
     }
 }
