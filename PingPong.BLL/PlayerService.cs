@@ -96,5 +96,18 @@ namespace PingPong.BLL
                          .SingleOrDefault();
             return player;
         }
+
+        /// <summary>
+        /// Returns Players full name based on username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public static string GetPlayerFullNameByUsername(string username)
+        {
+            var fullname = _repo.FindBy(x => x.LoginName == username)
+                           .Select(x => x.FirstName + " " + x.LastName)
+                           .SingleOrDefault();
+            return fullname;
+        }
     }
 }
