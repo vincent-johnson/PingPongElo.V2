@@ -93,39 +93,46 @@ namespace PingPong.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (model.Email.EndsWith("@accruent.com"))
                 {
+                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
 
-                    Player myPlayer = new Player();
-                    myPlayer.LoginName = model.Email;
-                    myPlayer.Password = model.Password;
-                    myPlayer.FirstName = model.FirstName;
-                    myPlayer.LastName = model.LastName;
-                    myPlayer.CurrentEloRating = 1500;
-                    myPlayer.Department = model.Department;
-                    myPlayer.Active = true;
-                    myPlayer.IsAdmin = false;
-                    PlayerService.CreateNewPlayer(myPlayer);
-                    await SignInAsync(user, isPersistent: false);
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    SmtpClient myClient = new SmtpClient("smtp.gmail.com", 587);
-                    myClient.UseDefaultCredentials = false;
-                    myClient.EnableSsl = true;
-                    myClient.Credentials = new System.Net.NetworkCredential("pstapppp@gmail.com", "ClintIsASillyWabbit");
-                    string to = user.Email;
-                    string from = "pstapppp@gmail.com";
-                    string subject = "WELCOME TO STAPPPPP";
-                    string body = "Welcome to STAPPPP.  The world is now your oyster, and the ping-pong paddle is your oyster-opening knife.  Please confirm your account by visiting this URL: " + callbackUrl;
-                    MailMessage message = new MailMessage(from, to, subject, body);
-                    myClient.Send(message);
-                    return RedirectToAction("Index", "Home");
+                        Player myPlayer = new Player();
+                        myPlayer.LoginName = model.Email;
+                        myPlayer.Password = model.Password;
+                        myPlayer.FirstName = model.FirstName;
+                        myPlayer.LastName = model.LastName;
+                        myPlayer.CurrentEloRating = 1500;
+                        myPlayer.Department = model.Department;
+                        myPlayer.Active = true;
+                        myPlayer.IsAdmin = false;
+                        PlayerService.CreateNewPlayer(myPlayer);
+                        await SignInAsync(user, isPersistent: false);
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        SmtpClient myClient = new SmtpClient("smtp.gmail.com", 587);
+                        myClient.UseDefaultCredentials = false;
+                        myClient.EnableSsl = true;
+                        myClient.Credentials = new System.Net.NetworkCredential("pstapppp@gmail.com", "ClintIsASillyWabbit");
+                        string to = user.Email;
+                        string from = "pstapppp@gmail.com";
+                        string subject = "WELCOME TO STAPPPPP";
+                        string body = "Welcome to STAPPPP.  The world is now your oyster, and the ping-pong paddle is your oyster-opening knife.  Please confirm your account by visiting this URL: " + callbackUrl;
+                        MailMessage message = new MailMessage(from, to, subject, body);
+                        myClient.Send(message);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
                 }
-                else
+                else 
                 {
-                    AddErrors(result);
+                    ModelState.AddModelError("", "Please use an @accruent.com email account.");
                 }
             }
 
