@@ -70,13 +70,15 @@ namespace PingPong.Web.Controllers
                 return RedirectToAction("Login", "Account");
             }
             var players = PlayerService.GetAllPlayersRestricted().Where(b=>b.LoginName!=User.Identity.Name);
-            var usernames = new List<string>();
+            var fullnames = new List<string>();
             foreach (Player player in players)
             {
-                usernames.Add(player.LoginName);
+                fullnames.Add(string.Format("{0} {1}",UpperFirst(player.FirstName), UpperFirst(player.LastName)));
+
             }
             var a = new GamesCreateViewModel();
-            a.Usernames = usernames;
+            a.Usernames = fullnames;
+            
             return View(a);
         }
 
@@ -205,6 +207,12 @@ namespace PingPong.Web.Controllers
         private double GetChallengerEloChange(Game game)
         {
             return EloCalculator.GetPlayerEloChange(game.ChallengerEloRating, game.DefenderEloRating, !game.DefenderWon, game.Weight);
+        }
+
+        private string UpperFirst(string text)
+        {
+            return char.ToUpper(text[0]) +
+                ((text.Length > 1) ? text.Substring(1).ToLower() : string.Empty);
         }
     }
 }
