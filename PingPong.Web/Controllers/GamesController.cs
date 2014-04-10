@@ -63,14 +63,14 @@ namespace PingPong.Web.Controllers
                 return RedirectToAction("Login", "Account");
             }
             var players = PlayerService.GetAllPlayersRestricted().Where(b=>b.LoginName!=User.Identity.Name);
-            var fullnames = new List<string>();
+            var usernames = new List<string>();
             foreach (Player player in players)
             {
-                fullnames.Add(string.Format("{0} {1}",UpperFirst(player.FirstName), UpperFirst(player.LastName)));
-
+                usernames.Add(player.LoginName);
             }
             var a = new GamesCreateViewModel();
-            a.Usernames = fullnames;
+            a.Usernames = usernames;
+            
             
             return View(a);
         }
