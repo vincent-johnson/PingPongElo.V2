@@ -16,7 +16,7 @@ namespace PingPong.Web.Controllers
     public class GamesController : Controller
     {
         // GET: Games
-        public ActionResult Index(int? counter)
+        public ActionResult Index()
         {
             int playerId = -1;
             if (String.IsNullOrEmpty(User.Identity.Name))
@@ -39,14 +39,7 @@ namespace PingPong.Web.Controllers
             a.games = games;
             a.PlayerId = playerId;
             a.players = players;
-            a.DeletedGamesCounter = counter.HasValue ? counter : 0;
             a.GameCount = games.Count();
-            if (games.Any())
-            {
-                a.LatestGame = GameService.FindLatestGameByUserId(a.PlayerId);
-                a.OpponentId = a.LatestGame.DefenderId == a.PlayerId? a.LatestGame.ChallengerId: a.LatestGame.DefenderId;
-                a.OpponentFullName = PlayerService.GetPlayerFullNameById(a.OpponentId);
-            }
             return View(a);
         }
 
@@ -162,7 +155,7 @@ namespace PingPong.Web.Controllers
                 var game = GameService.GetGameById(id);
                 var gameVm = new GamesDeleteViewModel(game);
                 gameVm.DeleteLatestGame();
-                return RedirectToAction("Index", new { counter = 1});
+                return RedirectToAction("Index");
             }
             catch
             {
