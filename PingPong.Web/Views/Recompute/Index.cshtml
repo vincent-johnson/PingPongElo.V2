@@ -1,0 +1,35 @@
+﻿@using PingPong.Entities
+@model IEnumerable<Player>
+@{
+    ViewBag.Title = "STAPPPP Home";
+}
+
+
+
+<div class="container">
+    <div class="text-center">
+        <hr/>
+        <hr/>
+        <h1><b>Recomputed Elo Ratings</b></h1>
+        <hr/>
+        <table class="table table-bordered">
+            <tr><td><b>Player</b></td><td><b>Recomputed Elo</b></td></tr>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>
+                        @string.Format("{0} {1}", player.FirstName, player.LastName);
+                    </td>
+                    <td>
+                        @Math.Round(player.CurrentEloRating)
+                    </td>
+                </tr>
+            }
+        </table>
+        <hr/>
+        <button type="button" class="btn btn-lg btn-danger">Save recomputed values to database</button> 
+    </div>
+</div>
+<hr/>
+<hr/>
+

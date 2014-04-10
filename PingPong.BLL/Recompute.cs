@@ -19,9 +19,9 @@ namespace PingPong.BLL
             PlayerRepo = new PingPongRepository<Player>();
         }
 
-        static int EloWeight { get; set; }
+        public static int EloWeight { get; set; }
 
-        static IEnumerable<Player> GetRecomputedPlayers()
+        public static IEnumerable<Player> GetRecomputedPlayers()
         {
             var players = PlayerRepo.GetAll().ToList();
             var games = GameRepo.GetAll().ToList().OrderBy(o => o.GameId);
@@ -64,7 +64,7 @@ namespace PingPong.BLL
 
 
 
-        static void SaveRecomputedChanges(IEnumerable<Player> players)
+        public static void SaveRecomputedChanges(IEnumerable<Player> players)
         {
             var playerCount = players.Count();
             for (int i = 0; i < playerCount; i++)
