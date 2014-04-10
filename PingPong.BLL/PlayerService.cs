@@ -110,6 +110,11 @@ namespace PingPong.BLL
             return fullname;
         }
 
+        /// <summary>
+        /// Returns player's full name based on identification number
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static string GetPlayerFullNameById(int id)
         {
             var fullname = _repo.FindBy(x => x.PlayerId == id)
@@ -118,6 +123,12 @@ namespace PingPong.BLL
             return fullname;
         }
 
+
+        /// <summary>
+        /// Retrieves player by indentification number
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Player GetPlayerById(int id)
         {
             var player = _repo.FindBy(x => x.PlayerId == id)
@@ -125,6 +136,12 @@ namespace PingPong.BLL
             return player;
         }
 
+        /// <summary>
+        /// Returns boolean value based on whether password is correct
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static bool IsCorrectPassword(int id, string password)
         {
             var pw = _repo.FindBy(x => x.PlayerId == id).Select(x => x.Password).SingleOrDefault();

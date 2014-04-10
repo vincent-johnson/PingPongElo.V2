@@ -1,10 +1,11 @@
-﻿@model PingPong.Web.Models.HomeIndexViewModel
+﻿@using PingPong.Entities
+@model PingPong.Web.Models.HomeIndexViewModel
 @{
     ViewBag.Title = "STAPPPP Home";
 }
 
 
-<hr/>
+<hr />
 <div class="jumbotron">
     <div class="text-center">
         <h1>Welcome to STAPPPP</h1>
@@ -19,38 +20,134 @@
             <li><h3>Play matches</h3></li>
             <li><h3>....</h3></li>
             <li><h3>Profit</h3></li>
-            <hr/>
+            <hr />
         </ul>
-        <div class="panel-group" id="accordion">
-            <div class="panel" style="border-color: #000000">
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <b>View Current Player Rankings</b>
-                        </a>
-                    </div>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td></tr>
-                            @for (int i = 1; i <= Model.players.Count(); i++)
-                            {
-                                string name = Model.players.ElementAt(i - 1).FirstName + " " + Model.players.ElementAt(i - 1).LastName;
-                                int currentElo = (int)Model.players.ElementAt(i - 1).CurrentEloRating;
-                                <tr>
-                                    <td><font size="4">@i</font></td>
-                                    <td><font size="4">@name</font></td>
-                                    <td><font size="4">@currentElo</font></td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                </div>
-            </div>
+        
+        <hr/>
+        <hr/>
+        <div class="pad-bottom">
+            <h1><b>Ratings Leaderboard</b></h1>
         </div>
+        
+        <table class="table table-bordered">
+            <tr><td><b><font size="5">Rank</font></b></td><td><b><font size="5">Name</font></b></td><td><b><font size="5">Rating</font></b></td><td><b><font size="5">Delta</font></b></td></tr>
+            @for (int i = 1; i <= Model.players.Count(); i++)
+            {
+                Player player = Model.players.ElementAt(i - 1);
+                string name = player.FirstName + " " + player.LastName;
+                int currentElo = (int)player.CurrentEloRating;
+                int gameCount = Model.GameCount(player.PlayerId);
+
+                
+                
+                //This is a clusterfuck, need to refactor
+                
+                
+                if (gameCount == 1)
+                {
+                    Game game = Model.LatestGame(player.PlayerId);
+                    bool IsChallenger = (player.PlayerId == game.ChallengerId);
+                    <tr>
+                        <td><font size="4">@i</font></td>
+                        <td><font size="4">@name</font></td>
+                        <td><font size="4">@currentElo</font></td>
+                        <td>
+                            <font size="4">
+                                @Model.EloDifference(IsChallenger, game)
+                                @if (currentElo - 1500.00 > 0)
+                                {
+                                    <span class="glyphicon glyphicon-arrow-up green"></span>
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-arrow-down red"></span>
+                                }
+                            </font>
+                        </td>
+                    </tr>
+                }
+                if (gameCount > 1)
+                {
+                    Game game = Model.LatestGame(player.PlayerId);
+                    bool IsChallenger = (player.PlayerId == game.ChallengerId);
+
+                    if (IsChallenger)
+                    {
+                        if (game.ChallengerEloRating > currentElo)
+                        {
+                            <tr>
+                                <td><font size="4">@i</font></td>
+                                <td><font size="4">@name</font></td>
+                                <td><font size="4">@currentElo</font></td>
+                                <td>
+                                    <font size="4">
+                                        @Model.EloDifference(IsChallenger, game)
+                                    <span class="glyphicon glyphicon-arrow-down red"></span>
+                                </font>
+                            </td>
+                        </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td><font size="4">@i</font></td>
+                                <td><font size="4">@name</font></td>
+                                <td><font size="4">@currentElo</font></td>
+                                <td>
+                                    <font size="4">
+                                        @Model.EloDifference(IsChallenger, game)
+                                        <span class="glyphicon glyphicon-arrow-up green"></span>
+                                    </font>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        if (game.DefenderEloRating > currentElo)
+                        {
+                            <tr>
+                                <td><font size="4">@i</font></td>
+                                <td><font size="4">@name</font></td>
+                                <td><font size="4">@currentElo</font></td>
+                                <td>
+                                    <font size="4">
+                                        @Model.EloDifference(IsChallenger, game)
+                                        <span class="glyphicon glyphicon-arrow-down red"></span>
+                                    </font>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td><font size="4">@i</font></td>
+                                <td><font size="4">@name</font></td>
+                                <td><font size="4">@currentElo</font></td>
+                                <td>
+                                    <font size="4">
+                                        @Model.EloDifference(IsChallenger, game)
+                                        <span class="glyphicon glyphicon-arrow-up green"></span>
+                                    </font>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                if (gameCount == 0)
+                {
+                    <tr>
+                        <td><font size="4">@i</font></td>
+                        <td><font size="4">@name</font></td>
+                        <td><font size="4">@currentElo</font></td>
+                        <td><font size="4">---</font></td>
+                    </tr>
+                }
+            }
+        </table>
+
     </div>
 </div>
 
-<hr/>
+<hr />
 <hr />

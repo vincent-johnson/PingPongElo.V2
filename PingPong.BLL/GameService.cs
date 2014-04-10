@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.VisualStyles;
 using PingPong.Data;
 using PingPong.Entities;
@@ -68,11 +69,20 @@ namespace PingPong.BLL
             _repo.Delete(game.GameId);
         }
 
+        /// <summary>
+        /// Deletes existing game by identification number
+        /// </summary>
+        /// <param name="id"></param>
         public static void DeleteExistingGameById(int id)
         {
             _repo.Delete(id);
         }
 
+        /// <summary>
+        /// Finds latest game by user id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Game FindLatestGameByUserId(int id)
         {
             try
@@ -88,6 +98,11 @@ namespace PingPong.BLL
             
         }
 
+        /// <summary>
+        /// Returns game by identification number
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Game GetGameById(int id)
         {
             var game = _repo.FindBy(x => x.GameId == id).SingleOrDefault();
@@ -98,6 +113,20 @@ namespace PingPong.BLL
         {
             var gameCount = _repo.FindBy(x => x.ChallengerId == id || x.DefenderId == id).Count();
             return gameCount;
+        }
+
+        /// <summary>
+        /// Gets second latest gamne
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static Game GetSecondToLastGame(int userId)
+        {
+            //This needs to be refactored. Looks terrible
+            var games = _repo.FindBy(x => x.ChallengerId == userId || x.DefenderId == userId).ToList();
+            var latestGame = games.OrderByDescending(x => x.GameId).First();
+            games.Remove(latestGame);
+            return games.OrderByDescending(x => x.GameId).FirstOrDefault();
         }
     }
 }

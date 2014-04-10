@@ -5,3 +5,11 @@
 .pad-bottom {
     margin-bottom: 40px !important;
 }
+
+.red {
+    color: #FF0000
+}
+
+.green {
+    color: #00FF00;
+}
