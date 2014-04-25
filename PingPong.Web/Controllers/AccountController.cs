@@ -123,6 +123,7 @@ namespace PingPong.Web.Controllers
                         string body = "Welcome to STAPPPP.  The world is now your oyster, and the ping-pong paddle is your oyster-opening knife.  Please confirm your account by visiting this URL: " + callbackUrl;
                         MailMessage message = new MailMessage(from, to, subject, body);
                         myClient.Send(message);
+                        myClient.Dispose();
                         return RedirectToAction("Index", "Home");
                     }
                     else
