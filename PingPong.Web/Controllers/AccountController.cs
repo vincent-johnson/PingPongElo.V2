@@ -188,7 +188,7 @@ namespace PingPong.Web.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                SmtpClient myClient = new SmtpClient("smtp.gmail.com", 587);
+                SmtpClient myClient = new SmtpClient("smtp.gmail.com",25);
                 myClient.UseDefaultCredentials = false;
                 myClient.EnableSsl = true;
                 myClient.Credentials = new System.Net.NetworkCredential("pstapppp@gmail.com", "ClintIsASillyWabbit");
@@ -198,6 +198,7 @@ namespace PingPong.Web.Controllers
                 string body = "You forgot your password.  Acknowledge your shame and move on by clicking the following link to reset your password: " + callbackUrl;
                 MailMessage message = new MailMessage(from, to, subject, body);
                 myClient.Send(message);
+                myClient.Dispose();
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
 
             }
