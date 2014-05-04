@@ -13,11 +13,9 @@ namespace PingPong.BLL
 {
     public class GameService
     {
-        private static readonly IPingPongRepository<Game> _repo;
 
         static GameService()
         {
-            _repo = new PingPongRepository<Game>();
         }
 
 
@@ -28,6 +26,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static IEnumerable<Game> GetGamesByPlayerId(int playerId)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             var games = _repo.FindBy(x => x.ChallengerId == playerId || x.DefenderId == playerId)
                         .ToList();
             return games;
@@ -49,6 +48,7 @@ namespace PingPong.BLL
         /// </summary>
         public static void UpdateExistingGame(Game game)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             _repo.Update(game);
         }
 
@@ -57,6 +57,7 @@ namespace PingPong.BLL
         /// </summary>
         public static void CreateNewGame(Game game)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             _repo.Create(game);
         }
 
@@ -66,6 +67,7 @@ namespace PingPong.BLL
         /// </summary>
         public static void DeleteExistingGame(Game game)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             _repo.Delete(game.GameId);
         }
 
@@ -75,6 +77,7 @@ namespace PingPong.BLL
         /// <param name="id"></param>
         public static void DeleteExistingGameById(int id)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             _repo.Delete(id);
         }
 
@@ -87,6 +90,7 @@ namespace PingPong.BLL
         {
             try
             {
+                IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
                 var games = _repo.FindBy(x => x.ChallengerId == id || x.DefenderId == id).ToList();
                 var latestGameId = games.Max(x => x.GameId);
                 return _repo.FindBy(x => x.GameId == latestGameId).SingleOrDefault();
@@ -105,12 +109,14 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static Game GetGameById(int id)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             var game = _repo.FindBy(x => x.GameId == id).SingleOrDefault();
             return game;
         }
 
         public static int GetNumberOfGamesForPlayer(int id)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             var gameCount = _repo.FindBy(x => x.ChallengerId == id || x.DefenderId == id).Count();
             return gameCount;
         }
@@ -122,6 +128,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static Game GetSecondToLastGame(int userId)
         {
+            IPingPongRepository<Game> _repo = new PingPongRepository<Game>();
             //This needs to be refactored. Looks terrible
             var games = _repo.FindBy(x => x.ChallengerId == userId || x.DefenderId == userId).ToList();
             var latestGame = games.OrderByDescending(x => x.GameId).First();

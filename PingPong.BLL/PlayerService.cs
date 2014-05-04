@@ -10,11 +10,8 @@ namespace PingPong.BLL
 {
     public static class PlayerService
     {
-        private static readonly IPingPongRepository<Player> _repo;
-
         static PlayerService()
         {
-            _repo = new PingPongRepository<Player>();
         }
 
         /// <summary>
@@ -22,6 +19,7 @@ namespace PingPong.BLL
         /// </summary>
         public static void CreateNewPlayer(Player player)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             _repo.Create(player);
         }
 
@@ -30,6 +28,7 @@ namespace PingPong.BLL
         /// </summary>
         public static void UpdateExistingPlayer(Player player)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             _repo.Update(player);
         }
 
@@ -38,6 +37,7 @@ namespace PingPong.BLL
         /// </summary>
         public static void DeleteExistingPlayer(Player player)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             _repo.Delete(player.PlayerId);
         }
 
@@ -81,6 +81,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         private static IEnumerable<Player> GetAllPlayers()
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             var players = _repo.GetAll();
             return players;
         }
@@ -92,6 +93,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static Player GetPlayerByPassword(string password)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             var player = _repo.FindBy(x => x.Password == password)
                          .SingleOrDefault();
             return player;
@@ -104,6 +106,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static string GetPlayerFullNameByUsername(string username)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             var fullname = _repo.FindBy(x => x.LoginName == username)
                            .Select(x => x.FirstName + " " + x.LastName)
                            .SingleOrDefault();
@@ -117,6 +120,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static string GetPlayerFullNameById(int id)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             var fullname = _repo.FindBy(x => x.PlayerId == id)
                             .Select(x => x.FirstName + " " + x.LastName)
                             .SingleOrDefault();
@@ -131,6 +135,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static Player GetPlayerById(int id)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             var player = _repo.FindBy(x => x.PlayerId == id)
                         .SingleOrDefault();
             return player;
@@ -144,6 +149,7 @@ namespace PingPong.BLL
         /// <returns></returns>
         public static bool IsCorrectPassword(int id, string password)
         {
+            IPingPongRepository<Player> _repo = new PingPongRepository<Player>();
             var pw = _repo.FindBy(x => x.PlayerId == id).Select(x => x.Password).SingleOrDefault();
             return password == pw;
         }
