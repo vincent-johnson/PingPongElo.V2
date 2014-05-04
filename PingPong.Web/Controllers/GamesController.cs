@@ -69,7 +69,7 @@ namespace PingPong.Web.Controllers
                 usernames.Add(player.LoginName);
             }
             var a = new GamesCreateViewModel();
-            a.Usernames = usernames;
+            a.Usernames = usernames.OrderBy(c=>c).ToList();
             
             
             return View(a);
